@@ -17,7 +17,7 @@ app.use(express.json());
 app.get("/", async (req, res) => {
   try {
     const path = req.query.path;
-    const data = await getData(path, req.headers);
+    const data = await getData(path, req);
     return res.json(data);
   } catch (error) {
     return res.json({});
@@ -28,10 +28,9 @@ app.post("/", async (req, res) => {
   try {
     const path = req.query.path;
     const data = await postData(path, req.headers, req.body);
-    console.log(1111111);
     return res.send(data)
   } catch (error) {
-    return res.status(error.code).json(error);
+    return res.status(error?.code || 400).json(error);
   }
 });
 
@@ -39,10 +38,9 @@ app.put("/", async (req, res) => {
   try {
     const path = req.query.path;
     const data = await putData(path, req.headers, req.body);
-    console.log(1111111);
     return res.send(data)
   } catch (error) {
-    return res.status(error.code).json(error);
+    return res.status(error?.code || 400).json(error);
   }
 });
 
